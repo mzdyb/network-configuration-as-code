@@ -1,0 +1,6 @@
+collections/ansible_collections
+ansible-navigator.log
+*-artifact-*
+.ssh
+secret_vars
+tar.gz

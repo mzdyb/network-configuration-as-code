@@ -1,0 +1,14 @@
+---
+l2_interfaces:
+  - name: Ethernet1
+    access:
+      vlan: 10
+    state: present
+  - name: Ethernet2
+    access:
+      vlan: 20
+    state: present
+  - name: Ethernet3
+    access:
+      vlan: 30
+    state: present

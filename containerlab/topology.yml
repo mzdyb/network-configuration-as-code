@@ -1,0 +1,40 @@
+---
+name: cisco-arista-lab
+
+mgmt:
+  ipv4-subnet: 172.20.0.0/16
+
+topology:
+  nodes:
+    rtr1:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:17.16.01a
+      mgmt-ipv4: 172.20.0.100
+    sw1:
+      kind: cisco_iol
+      image: vrnetlab/cisco_iol:L2-17.16.01a
+      type: L2
+      mgmt-ipv4: 172.20.0.101
+    rtr2:
+      kind: ceos
+      image: ceos:4.34.1F
+      mgmt-ipv4: 172.20.0.102
+    sw2:
+      kind: ceos
+      image: ceos:4.34.1F
+      mgmt-ipv4: 172.20.0.103
+
+  links:
+    - endpoints: ["rtr1:e0/1","sw1:e0/1"]
+    - endpoints: ["rtr2:eth1","sw2:eth1"]
+    - endpoints: ["rtr1:e0/2","rtr2:eth2"]
+  # Unconnected cEoS interfaces
+    - type: dummy
+      endpoint:
+        node: sw2
+        interface: eth2
+    - type: dummy
+      endpoint:
+        node: sw2
+        interface: eth3
+

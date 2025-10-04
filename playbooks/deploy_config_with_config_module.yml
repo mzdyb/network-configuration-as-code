@@ -1,0 +1,37 @@
+---
+- name: Deploy network configuration using Config modules
+  hosts: network_devices
+  
+  tasks:
+    - name: Load configuration data from Source of Truth
+      ansible.builtin.include_vars:
+        file: "{{ item }}"
+      with_fileglob:
+        - "{{ config_data_config_module }}"
+      register: config_data_results
+
+    # - debug: var=config_data_results
+
+    # - name: Template a file
+    #   ansible.builtin.template:
+    #     src: "{{ config_template }}"
+    #     dest: /tmp/{{ inventory_hostname }}_config.txt
+
+# Block for Cisco devices (routers and switches)
+    - name: Configure Cisco devices using config module
+      when: platform == "ios-xe"
+      block:
+        - name: Apply configuration to Cisco device
+          cisco.ios.ios_config:
+            src: "{{ config_template }}"
+            defaults: true
+          register: cisco_config_result
+  
+# Block for Arista devices (routers and switches)
+    - name: Configure Arista devices using config module
+      when: platform == "eos"
+      block:
+        - name: Apply configuration to Arista device
+          arista.eos.eos_config:
+            src: "{{ config_template }}"
+          register: arista_config_result

@@ -1,0 +1,13 @@
+{% if l2_interfaces is defined %}
+{% for interface in l2_interfaces %}
+{% if interface.state == "present" %}
+interface {{ interface.name }}
+{% if interface.access.vlan is defined %}
+   switchport mode access
+   switchport access vlan {{ interface.access.vlan }}
+{% endif %}
+{% elif interface.state == "absent" %}
+default interface {{ interface.name }}
+{% endif %}
+{% endfor %}
+{% endif %}

@@ -1,0 +1,84 @@
+---
+- name: Deploy network configuration using Network Resource modules
+  hosts: sw2
+
+  tasks:
+    - name: Load configuration data from Source of Truth
+      ansible.builtin.include_vars:
+        file: "{{ item }}"
+      with_fileglob:
+        - "{{ config_data_resource_modules }}"
+      register: config_data_results
+
+# Block for Arista switches
+    - name: Configure Arista switches
+      when: platform == "eos" and role == "switch" 
+      block:
+      - name: "Configure VLANs"
+        arista.eos.eos_vlans:
+          config: "{{ vlans }}"
+          state: merged
+        when: vlans is defined
+        register: vlan_result
+
+      - name: Configure L2 interfaces
+        arista.eos.eos_l2_interfaces:
+          config: "{{ l2_interfaces }}"
+          state: merged
+        when: l2_interfaces is defined
+        register: l2_interfaces_result
+
+# Block for Arista routers
+    - name: Configure interfaces in Arista routers
+      when: platform == "eos" and role == "router" 
+      block:
+      - name: Configure interface parameters
+        arista.eos.eos_interfaces:
+          config: "{{ interfaces }}"
+          state: merged
+        when: interfaces is defined
+        register: interfaces_result
+
+      - name: Configure interface L3 parameters
+        arista.eos.eos_l3_interfaces:
+          config: "{{ l3_interfaces }}"
+          state: merged
+        when: l3_interfaces is defined
+        register: l3_interfaces_result
+
+# Block for Cisco switches
+    - name: Configure Cisco switches
+      when: platform == "ios-xe" and role == "switch" 
+      block:
+      - name: "Configure VLANs"
+        cisco.ios.ios_vlans:
+          config: "{{ vlans }}"
+          state: merged
+        when: vlans is defined
+        register: vlan_result
+
+      - name: Configure L2 interfaces
+        cisco.ios.ios_l2_interfaces:
+          config: "{{ l2_interfaces }}"
+          state: merged
+        when: l2_interfaces is defined
+        register: l2_interfaces_result
+
+# Block for Cisco routers
+    - name: Configure interfaces in Cisco routers
+      when: platform == "ios-xe" and role == "router" 
+      block:
+      - name: Configure interface parameters
+        cisco.ios.ios_interfaces:
+          config: "{{ interfaces }}"
+          state: merged
+        when: interfaces is defined
+        register: interfaces_result
+
+      - name: Configure interface L3 parameters
+        cisco.ios.ios_l3_interfaces:
+          config: "{{ l3_interfaces }}"
+          state: merged
+        when: l3_interfaces is defined
+        register: l3_interfaces_result
+

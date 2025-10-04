@@ -1,0 +1,21 @@
+{% for interface in interfaces -%}
+{% if interface.state == "present" %}
+interface {{ interface.name }}
+{% if interface.description is defined %}
+   description {{ interface.description }}
+{% endif %}
+{% if interface.ipv4 is defined %}
+{% for ipv4 in interface.ipv4 %}
+   ip address {{ ipv4.address }}
+{% endfor %}
+{% endif %}
+{% if interface.enabled %}
+   no shutdown
+{% else %}
+   shutdown
+{% endif %}
+{% elif interface.state == "absent" %}
+default interface {{ interface.name }}
+{% endif %}
+!
+{% endfor %}

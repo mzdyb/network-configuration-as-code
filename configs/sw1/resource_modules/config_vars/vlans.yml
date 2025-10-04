@@ -1,0 +1,10 @@
+---
+vlans:
+  - vlan_id: 10
+    name: to-rtr1
+  - vlan_id: 20
+    name: users
+  - vlan_id: 30
+    name: servers
+  - vlan_id: 40
+    name: mgmt

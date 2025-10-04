@@ -1,0 +1,5 @@
+---
+backup_dir: "./backups"
+config_data_resource_modules: "../configs/{{ inventory_hostname }}/resource_modules/config_vars/*"
+config_data_config_module: "../configs/{{ inventory_hostname }}/config_module/config_vars/*"
+config_template: "../configs/{{ inventory_hostname }}/config_module/templates/{{ inventory_hostname }}.j2"

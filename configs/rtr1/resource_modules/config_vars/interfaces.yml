@@ -1,0 +1,22 @@
+---
+interfaces:
+  - name: Ethernet0/1
+    description: to-rtr2
+    enabled: true
+  - name: Ethernet0/2
+    description: to-sw1
+    enabled: true
+  - name: Loopback0
+    description: loopback
+    enabled: true
+
+l3_interfaces:
+  - name: Ethernet0/1
+    ipv4:
+      - address: 10.0.0.1/30
+  - name: Ethernet0/2
+    ipv4:
+      - address: 192.168.1.1/24
+  - name: Loopback0
+    ipv4:
+      - address: 1.1.1.1/32

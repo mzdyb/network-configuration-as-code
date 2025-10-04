@@ -1,0 +1,14 @@
+---
+vlans:
+  - vlan_id: 10
+    name: to-rtr2
+    state: present
+  - vlan_id: 20
+    name: users
+    state: present
+  - vlan_id: 30
+    state: present
+    name: servers
+  - vlan_id: 40
+    name: mgmt
+    state: present

@@ -1,0 +1,60 @@
+---
+cisco_routers:
+  hosts:
+    rtr1:
+      ansible_host: 172.20.0.100
+      platform: "ios-xe"
+      role: "router"
+  vars:
+    ansible_network_os: cisco.ios.ios
+
+cisco_switches:
+  hosts:
+    sw1:
+      ansible_host: 172.20.0.101
+      platform: "ios-xe"
+      role: "switch"
+  vars:
+    ansible_network_os: cisco.ios.ios
+
+arista_routers:
+  hosts:
+    rtr2:
+      ansible_host: 172.20.0.102
+      platform: "eos"
+      role: "router"
+  vars:
+    ansible_network_os: arista.eos.eos
+
+arista_switches:
+  hosts:
+    sw2:
+      ansible_host: 172.20.0.103
+      platform: "eos"
+      role: "switch"
+  vars:
+    ansible_network_os: arista.eos.eos
+
+switches:
+  hosts:
+    sw1:
+    sw2:
+
+routers:
+  hosts:
+    rtr1:
+    rtr2:
+
+network_devices:
+  children:
+    switches:
+    routers:
+  vars:
+    ansible_connection: ansible.netcommon.network_cli
+    ansible_user: admin
+    ansible_password: admin
+    ansible_become: true
+    ansible_become_method: enable
+    ansible_become_password: admin
+
+
