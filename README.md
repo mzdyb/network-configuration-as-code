@@ -2,11 +2,13 @@
 ## Introduction
 
 This project demonstrates an example of automating network configuration management using Ansible for multi-vendor (Cisco & Arista) network devices. 
-It implements Configuration as Code (CaC) approach with Source of Truth (SoT) defined in Github where network configurations are defined in YAML files and deployed using Ansible playbooks. Two different configuration approaches are presented here:
+It showcases Configuration as Code (CaC) approach with Source of Truth (SoT) defined in Github where network configurations are defined in YAML files and deployed using Ansible playbooks. Two different configuration methods are presented here:
 - declarative configuration with Ansible Network Resource modules
 - template-based configuration with Ansible Config modules 
 
 ## Network Topology
+
+![multivendor_topo](files/topo.png)
 
 The lab environment consists of:
 - **rtr1**: Cisco IOS-XE Router (172.20.0.100)
