@@ -1,0 +1,19 @@
+name: Implement configuration to network devices using Ansible Automation Platform
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'configs/**'
+
+jobs:
+  trigger_workflow_template:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Invoke "Network CaC - deploy configuration" workflow template webhook
+      uses: distributhor/workflow-webhook@v3
+      with:
+        webhook_url: ${{ secrets.WEBHOOK_URL_NETWORK_CAC }}
+        webhook_secret: ${{ secrets.WEBHOOK_SECRET_NETWORK_CAC }}
+        verify_ssl: false
