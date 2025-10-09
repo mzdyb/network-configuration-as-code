@@ -8,7 +8,18 @@ l2_interfaces:
     mode: access
     access:
       vlan: 20
+  # - name: Ethernet0/3
+  #   mode: access
+  #   access:
+  #     vlan: 30
+  # - name: Ethernet0/3
+  #   mode: access
+  #   access:
+  #     vlan: 30
+
   - name: Ethernet0/3
-    mode: access
-    access:
-      vlan: 30
+    mode: trunk
+    trunk:
+      encapsulation: dot1q
+      native_vlan: 1
+      allowed_vlans: 10,20,30
