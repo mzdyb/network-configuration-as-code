@@ -6,7 +6,7 @@ interface {{ interface.name }}
 {% endif %}
 {% if interface.ipv4 is defined %}
 {% for ipv4 in interface.ipv4 %}
- ip address {{ ipv4.address.split('/')[0] }} {{ ipv4.address | ipaddr('netmask') }}
+ ip address {{ ipv4.address.split('/')[0] }} {{ ipv4.address | ansible.utils.ipaddr('netmask') }}
 {% endfor %}
 {% endif %}
 {% if interface.enabled %}
