@@ -1,6 +1,6 @@
 ---
 - name: Deploy network configuration using Network Resource modules
-  hosts: sw1
+  hosts: network_devices
 
   tasks:
     - name: Load configuration data from Source of Truth
@@ -17,14 +17,14 @@
       - name: "Configure VLANs"
         arista.eos.eos_vlans:
           config: "{{ vlans }}"
-          state: merged
+          state: replaced
         when: vlans is defined
         register: vlan_result
 
       - name: Configure L2 interfaces
         arista.eos.eos_l2_interfaces:
           config: "{{ l2_interfaces }}"
-          state: merged
+          state: replaced
         when: l2_interfaces is defined
         register: l2_interfaces_result
 
@@ -35,14 +35,14 @@
       - name: Configure interface parameters
         arista.eos.eos_interfaces:
           config: "{{ interfaces }}"
-          state: merged
+          state: replaced
         when: interfaces is defined
         register: interfaces_result
 
       - name: Configure interface L3 parameters
         arista.eos.eos_l3_interfaces:
           config: "{{ l3_interfaces }}"
-          state: merged
+          state: replaced
         when: l3_interfaces is defined
         register: l3_interfaces_result
 
@@ -53,14 +53,14 @@
       - name: "Configure VLANs"
         cisco.ios.ios_vlans:
           config: "{{ vlans }}"
-          state: merged
+          state: replaced
         when: vlans is defined
         register: vlan_result
 
       - name: Configure L2 interfaces
         cisco.ios.ios_l2_interfaces:
           config: "{{ l2_interfaces }}"
-          state: parsed
+          state: replaced
         when: l2_interfaces is defined
         register: l2_interfaces_result
 
@@ -71,13 +71,13 @@
       - name: Configure interface parameters
         cisco.ios.ios_interfaces:
           config: "{{ interfaces }}"
-          state: merged
+          state: replaced
         when: interfaces is defined
         register: interfaces_result
 
       - name: Configure interface L3 parameters
         cisco.ios.ios_l3_interfaces:
           config: "{{ l3_interfaces }}"
-          state: merged
+          state: replaced
         when: l3_interfaces is defined
         register: l3_interfaces_result
