@@ -2,9 +2,13 @@
 vlans:
   - vlan_id: 10
     name: to-rtr2
+    state: active
   - vlan_id: 20
     name: users
+    state: active
   - vlan_id: 30
     name: servers
+    state: active
   - vlan_id: 40
     name: mgmt
+    state: active
