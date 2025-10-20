@@ -3,6 +3,7 @@
 {% if vlan.state == "present" %}
 vlan {{ vlan.vlan_id }}
  name {{ vlan.name }}
+ exit
 {% elif vlan.state == "absent" %}
 no vlan {{ vlan.vlan_id }}
 {% endif %}
