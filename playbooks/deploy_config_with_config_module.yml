@@ -24,7 +24,7 @@
         - name: Apply configuration to Cisco device
           cisco.ios.ios_config:
             src: "{{ config_template }}"
-            # defaults: true
+            defaults: true
           register: cisco_config_result
   
 # Block for Arista devices (routers and switches)

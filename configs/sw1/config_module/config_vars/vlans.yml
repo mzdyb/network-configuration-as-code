@@ -9,6 +9,9 @@ vlans:
   - vlan_id: 30
     name: servers
     state: present
-  - vlan_id: 90
+  - vlan_id: 40
     name: mgmt
+    state: present
+  - vlan_id: 50
+    name: abc
     state: present
