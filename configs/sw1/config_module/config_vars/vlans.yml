@@ -14,4 +14,4 @@ vlans:
     state: present
   - vlan_id: 50
     name: abc
-    state: present
+    state: absent
