@@ -1,5 +1,5 @@
 ---
-# This workflow conditionally triggers Ansible Automation Platform job templates
+# This workflow conditionally triggers Ansible Automation Platform workflow job templates
 # based on the directory where code changes are pushed (config_module or resource_modules folders in the configs directory)
 
 name: Implement configuration to network devices using Ansible Automation Platform
@@ -37,7 +37,7 @@ jobs:
     if: ${{ needs.detect_changes.outputs.config_module == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Invoke "Network CaC - deploy configuration with Config modules" job template webhook
+      - name: Invoke "Network CaC - deploy configuration with Config modules workflow" template webhook
         uses: distributhor/workflow-webhook@v3
         with:
           webhook_url: ${{ secrets.WEBHOOK_URL_NETWORK_CAC_CONFIG }}
@@ -50,31 +50,9 @@ jobs:
     if: ${{ needs.detect_changes.outputs.resource_modules == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Invoke "Network CaC - deploy configuration with Network Resource modules" job template webhook
+      - name: Invoke "Network CaC - deploy configuration with Network Resource modules workflow" template webhook
         uses: distributhor/workflow-webhook@v3
         with:
           webhook_url: ${{ secrets.WEBHOOK_URL_NETWORK_CAC_RESOURCE }}
           webhook_secret: ${{ secrets.WEBHOOK_SECRET_NETWORK_CAC_RESOURCE }}
           verify_ssl: false
-
-
-
-# name: Implement configuration to network devices using Ansible Automation Platform
-
-# on:
-#   push:
-#     branches:
-#       - main
-#     paths:
-#       - 'configs/**'
-
-# jobs:
-#   trigger_workflow_template:
-#     runs-on: ubuntu-latest
-#     steps:
-#     - name: Invoke "Network CaC - deploy configuration" workflow template webhook
-#       uses: distributhor/workflow-webhook@v3
-#       with:
-#         webhook_url: ${{ secrets.WEBHOOK_URL_NETWORK_CAC }}
-#         webhook_secret: ${{ secrets.WEBHOOK_SECRET_NETWORK_CAC }}
-#         verify_ssl: false
