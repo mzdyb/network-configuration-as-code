@@ -1,5 +1,4 @@
 name: Implement configuration to network devices using Ansible Automation Platform
-
 on:
   push:
     branches:
@@ -8,12 +7,69 @@ on:
       - 'configs/**'
 
 jobs:
-  trigger_workflow_template:
+  detect_changes:
+    runs-on: ubuntu-latest
+    outputs:
+      config_module: ${{ steps.filter.outputs.config_module }}
+      resource_modules: ${{ steps.filter.outputs.resource_modules }}
+    steps:
+      - name:  Clone your repository into the runner
+        uses: actions/checkout@v4
+
+      - name: Detect changed file paths
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            config_module:
+              - 'configs/**/config_module/**'
+            resource_modules:
+              - 'configs/**/resource_modules/**'
+
+  # This job is triggered if changes are detected in 'configs/**/config_module/**'
+  deploy_with_config_module:
+    needs: detect_changes
+    if: ${{ needs.detect_changes.outputs.config_module == 'true' }}
     runs-on: ubuntu-latest
     steps:
-    - name: Invoke "Network CaC - deploy configuration" workflow template webhook
-      uses: distributhor/workflow-webhook@v3
-      with:
-        webhook_url: ${{ secrets.WEBHOOK_URL_NETWORK_CAC }}
-        webhook_secret: ${{ secrets.WEBHOOK_SECRET_NETWORK_CAC }}
-        verify_ssl: false
+      - name: Invoke "Network CaC - deploy configuration with Config modules" job template webhook
+        uses: distributhor/workflow-webhook@v3
+        with:
+          webhook_url: ${{ secrets.WEBHOOK_URL_NETWORK_CAC_CONFIG }}
+          webhook_secret: ${{ secrets.WEBHOOK_SECRET_NETWORK_CAC_CONFIG }}
+          verify_ssl: false
+
+  # This job is triggered if changes are detected in 'configs/**/resource_modules/**'
+  deploy_with_network_resource_modules:
+    needs: detect_changes
+    if: ${{ needs.detect_changes.outputs.resource_modules == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Invoke "Network CaC - deploy configuration with Network Resource modules" job template webhook
+        uses: distributhor/workflow-webhook@v3
+        with:
+          webhook_url: ${{ secrets.WEBHOOK_URL_NETWORK_CAC_RESOURCE }}
+          webhook_secret: ${{ secrets.WEBHOOK_SECRET_NETWORK_CAC_RESOURCE }}
+          verify_ssl: false
+
+
+
+# name: Implement configuration to network devices using Ansible Automation Platform
+
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths:
+#       - 'configs/**'
+
+# jobs:
+#   trigger_workflow_template:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Invoke "Network CaC - deploy configuration" workflow template webhook
+#       uses: distributhor/workflow-webhook@v3
+#       with:
+#         webhook_url: ${{ secrets.WEBHOOK_URL_NETWORK_CAC }}
+#         webhook_secret: ${{ secrets.WEBHOOK_SECRET_NETWORK_CAC }}
+#         verify_ssl: false
