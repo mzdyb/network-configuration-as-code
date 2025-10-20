@@ -1,3 +1,7 @@
+---
+# This workflow conditionally triggers Ansible Automation Platform job templates
+# based on the directory where code changes are pushed (config_module or resource_modules folders in the configs directory)
+
 name: Implement configuration to network devices using Ansible Automation Platform
 on:
   push:
@@ -7,6 +11,7 @@ on:
       - 'configs/**'
 
 jobs:
+  # This first job checks which paths have been modified
   detect_changes:
     runs-on: ubuntu-latest
     outputs:
