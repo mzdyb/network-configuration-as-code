@@ -12,6 +12,3 @@ vlans:
   - vlan_id: 40
     name: mgmt
     state: present
-  - vlan_id: 50
-    name: abc
-    state: absent
