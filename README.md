@@ -1,15 +1,16 @@
-# Automating Network Configuration Management with Ansible !!!DRAFT!!!
+# Automating Network Configuration Management with Ansible
 ## Introduction
 
 This project demonstrates an example of automating network configuration management using Ansible for multi-vendor network devices (Cisco & Arista). 
-It showcases **Configuration as Code (CaC)** approach with **Source of Truth (SoT)** defined in Github where network configurations are defined in YAML files and deployed using Ansible playbooks. Two different configuration methods are presented here:
-- declarative configuration with Ansible Network Resource modules
-- template-based configuration with Ansible Config modules 
+It showcases **Configuration as Code (CaC)** approach with **Source of Truth (SoT)** defined in Github where network configurations are defined in YAML files and deployed via Ansible playbooks. Two different configuration methods are presented here:
 
-CaC approach requires configuration **paradigm shift** where we are switching to configuring network from SoT (this repository) not directly on devices. Configuration is then automatically implemented to network devices using Ansible.
+- **Declarative configuration** with Ansible **Network Resource modules**
+- **emplate-based configuration** with Ansible **Config modules** 
+
+With CaC approach the best practice is to implement configuration paradigm shift where we are switching to configuring network from SoT (this repository) instead of implementing changes directly on devices. Configuration is then automatically implemented on network devices using Ansible.
 
 ## Network Topology
-The following lab environment has been created with Containerlab:
+The following lab environment was created with Containerlab:
 
 ![Network Topology](files/topo.png)  
 
@@ -19,28 +20,59 @@ The following lab environment has been created with Containerlab:
 - **sw2**: Arista EOS Switch (172.20.0.103)
 
 ## Detailed Description
+This project uses simple VLAN and interface configurations of devices sw1, sw2, rtr1 and rtr2 to showcase the configuration implementation concepts. The device configurations which serve as our SoT are stored in _configs_ folder. Each device has separate configuration subfolders depending on the Ansible module used:
+1. For Config module: _'config_module'_ folder
+2. For Network Resource modules: _'resource_modules'_ folder
+
+In both approaches configuration data is decoupled from configuration syntax as the following:
+#### Config Module approach:
+- Data model: stored in _config_vars_ folders and based on custom Jinja2 templates
+- Syntax: defined in Jinja2 templates in _templates_ folder
+
+#### Resource Module approach:
+- Data: stored in _config_vars_ folders and based on data structures defined by modules
+- Syntax: handled automatically by Ansible modules
+
+### Github Actions
+By using webhook GitHub Actions workflow provides automated deployment of network configurations to devices via Ansible Automation Platform (AAP). It detects which configuration module is used and triggers the appropriate Workflow Job Template on AAP based on which folder contains the changes:
+
+- `configs/**/config_module/**`
+- `configs/**/resource_modules/**`
 
 
-## Configuration Approaches
+## Configuration workflow
+1. Modify network configuration in _configs_ directory
+2. Stage, commit and push changes to main branch
+```
+git add .
+git commit -m 'configuration x update'
+git push
+```
+3. Github actions workflow automatically triggers webhook and runs the appropriate automation Workflow Job Template on Ansible Automation Platform
 
-### 1. Config Module (Template-based)
+## AAP Workflow Job Templates
+Two Workflow Job Templates are defined on AAP: one to use Config module to implement configuration and second one to use Network Resource module. These workflows has simple structre:
+1. **Synchronize SoT** to have the latest configuration from repository
+2. **Deploy configuration** with the apropriate module
 
-This approach uses Jinja2 templates to generate device configurations from YAML data structures.
+![AAP Workflow](files/aap_workflow.png)  
 
-**Features:**
-- Template-based configuration generation
-- Full control over configuration syntax
-- Supports complex configuration scenarios
-- Platform-specific templates
+AAP Templates:
+![AAP Workflow](files/aap_templates.png) 
 
 
-### 2. Resource Module (Declarative)
+## Advanced concepts
+In this project the following basic Configuration as Code related concepts have been presented:
+- **Source of Truth**: intended configurations stored and version-controlled in Git
+- **Configuration paradigm shift**: modify configurations in Git not directly on devices
+- **Automated deployment**: Ansible automatically applies changes from SoT to devices
 
-This approach uses Ansible's network resource modules for declarative configuration management.
 
-**Features:**
-- Declarative configuration management
-- Idempotent operations
-- State management (merged, replaced, deleted)
-- Vendor-agnostic data structures
+This framework can be further extended and we can also implement the more advanced concepts for example:
+- **Configuration drift detection**: monitor and report unauthorized configuration changes
+- **Automated remediation**: automatically revert drift to maintain SoT compliance
+- **Rollback capabilities**: revert to previous configurations using Git history
 
+
+## Author
+[@mzdyb](https://www.linkedin.com/in/michal-zdyb-9aa4046/)

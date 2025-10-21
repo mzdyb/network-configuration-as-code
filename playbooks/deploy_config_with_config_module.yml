@@ -25,6 +25,7 @@
           cisco.ios.ios_config:
             src: "{{ config_template }}"
             defaults: true
+            save_when: modified
           register: cisco_config_result
   
 # Block for Arista devices (routers and switches)
@@ -34,4 +35,5 @@
         - name: Apply configuration to Arista device
           arista.eos.eos_config:
             src: "{{ config_template }}"
+            save_when: modified
           register: arista_config_result
