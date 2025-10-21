@@ -1,4 +1,4 @@
-# Automating Network Configuration Management with Ansible
+# Automating Network Configuration Management with Ansible and Configuration as Code approach
 ## Introduction
 
 This project demonstrates an example of automating network configuration management using Ansible for multi-vendor network devices (Cisco & Arista). 
