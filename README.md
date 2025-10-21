@@ -5,9 +5,9 @@ This project demonstrates an example of automating network configuration managem
 It showcases **Configuration as Code (CaC)** approach with **Source of Truth (SoT)** defined in Github where network configurations are defined in YAML files and deployed via Ansible playbooks. Two different configuration methods are presented here:
 
 - **Declarative configuration** with Ansible **Network Resource modules**
-- **emplate-based configuration** with Ansible **Config modules** 
+- **Template-based configuration** with Ansible **Config modules** 
 
-With CaC approach the best practice is to implement configuration paradigm shift where we are switching to configuring network from SoT (this repository) instead of implementing changes directly on devices. Configuration is then automatically implemented on network devices using Ansible.
+With CaC approach the best practice is to implement paradigm shift where we are switching to configuring network from SoT (this repository) instead of implementing changes directly on devices. Configuration is then automatically implemented on network devices using Ansible.
 
 ## Network Topology
 The following lab environment was created with Containerlab:
@@ -30,11 +30,11 @@ In both approaches configuration data is decoupled from configuration syntax as 
 - Syntax: defined in Jinja2 templates in _templates_ folder
 
 #### Resource Module approach:
-- Data: stored in _config_vars_ folders and based on data structures defined by modules
+- Data: stored in _config_vars_ folders and based on data structures defined by Resource modules
 - Syntax: handled automatically by Ansible modules
 
 ### Github Actions
-By using webhook GitHub Actions workflow provides automated deployment of network configurations to devices via Ansible Automation Platform (AAP). It detects which configuration module is used and triggers the appropriate Workflow Job Template on AAP based on which folder contains the changes:
+GitHub Actions workflow provides automated deployment of network configurations to devices via Ansible Automation Platform (AAP). It detects which configuration module is used and by using webhooks triggers the appropriate Workflow Job Template on AAP based on which folder contains the changes:
 
 - `configs/**/config_module/**`
 - `configs/**/resource_modules/**`
@@ -51,8 +51,8 @@ git push
 3. Github actions workflow automatically triggers webhook and runs the appropriate automation Workflow Job Template on Ansible Automation Platform
 
 ## AAP Workflow Job Templates
-Two Workflow Job Templates are defined on AAP: one to use Config module to implement configuration and second one to use Network Resource module. These workflows has simple structre:
-1. **Synchronize SoT** to have the latest configuration from repository
+Two Workflow Job Templates are defined on AAP to implement configurations: one using Config module and a second one using Network Resource modules. These workflows has a simple structre:
+1. **Synchronize SoT** to obtain the latest configuration from repository
 2. **Deploy configuration** with the apropriate module
 
 ![AAP Workflow](files/aap_workflow.png)  
