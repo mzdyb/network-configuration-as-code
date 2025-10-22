@@ -52,7 +52,7 @@ git push
 3. Github actions workflow automatically triggers webhook and runs the appropriate automation Workflow Job Template on Ansible Automation Platform
 
 ## AAP Workflow Job Templates
-Two Workflow Job Templates are defined on AAP to implement configurations: one using Config module and a second one using Network Resource modules. These workflows has a simple structre:
+Two Workflow Job Templates are defined on AAP to implement configurations: one using Config module and a second one using Network Resource modules. These workflows have a simple structure:
 1. **Synchronize SoT** to obtain the latest configuration from repository
 2. **Deploy configuration** with the apropriate module
 
