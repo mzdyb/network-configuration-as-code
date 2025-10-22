@@ -29,6 +29,7 @@ In both approaches configuration data is decoupled from configuration syntax as 
 - Data model: stored in _config_vars_ folders and based on custom Jinja2 templates
 - Syntax: defined in Jinja2 templates in _templates_ folder
 
+
 #### Resource Module approach:
 - Data: stored in _config_vars_ folders and based on data structures defined by Resource modules
 - Syntax: handled automatically by Ansible modules
@@ -72,6 +73,11 @@ This framework can be further extended with more advanced concepts for example:
 - **Configuration drift detection**: monitor and report unauthorized configuration changes
 - **Automated remediation**: automatically revert drift to maintain SoT compliance
 - **Rollback capabilities**: revert to previous configurations using Git history
+
+## Remarks
+Config modules are not declarative so they do not define configuration states. It is good practice to define states when creating Jinja2 templates, it makes configuration removal process much easier.
+Arista config module has 'replace: config' parameter which allows atomic configuration change. It is very beneficial for CaC approach because we don't have to track configuration states in case when the entire configuration is defined in Jinja2. To see the example of this approach see the following project: 
+https://github.com/mzdyb/netdevops
 
 
 ## Author
