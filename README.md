@@ -68,7 +68,7 @@ In this project the following basic Configuration as Code related concepts have 
 - **Automated deployment**: Ansible automatically applies changes from SoT to devices
 
 
-This framework can be further extended and we can also implement the more advanced concepts for example:
+This framework can be further extended with more advanced concepts for example:
 - **Configuration drift detection**: monitor and report unauthorized configuration changes
 - **Automated remediation**: automatically revert drift to maintain SoT compliance
 - **Rollback capabilities**: revert to previous configurations using Git history
