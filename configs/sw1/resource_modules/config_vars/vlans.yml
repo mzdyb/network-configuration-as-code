@@ -15,11 +15,6 @@ vlans:
     state: active
     shutdown: disabled
     mtu: 1500
-  - vlan_id: 31
-    name: new_servers
-    state: active
-    shutdown: disabled
-    mtu: 1500
   - vlan_id: 40
     name: mgmt
     state: active
