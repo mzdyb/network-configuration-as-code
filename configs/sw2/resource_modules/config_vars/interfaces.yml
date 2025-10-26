@@ -8,4 +8,4 @@ l2_interfaces:
       vlan: 20
   - name: Ethernet3
     access:
-      vlan: 31
+      vlan: 30
