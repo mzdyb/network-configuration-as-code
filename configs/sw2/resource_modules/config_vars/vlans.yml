@@ -6,7 +6,7 @@ vlans:
   - vlan_id: 20
     name: users
     state: active
-  - vlan_id: 30
+  - vlan_id: 35
     name: servers
     state: active
   - vlan_id: 40
