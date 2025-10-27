@@ -41,7 +41,7 @@ GitHub Actions workflow provides automated deployment of network configurations 
 - `configs/**/resource_modules/**`
 
 
-## Configuration workflow
+## Network configuration workflow
 1. Modify network configuration in _configs_ directory
 2. Stage, commit and push changes to main branch
 ```
