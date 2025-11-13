@@ -78,6 +78,8 @@ This framework can be further extended with more advanced concepts for example:
 Config modules are not declarative so they do not define configuration states. It is good practice to define states when creating Jinja2 templates (states are implemented in this project), it makes configuration removal process much easier.
 Arista config module has 'replace: config' parameter which allows atomic configuration change. It is very beneficial for CaC approach because we don't have to track configuration states in case when the entire configuration is defined in Jinja2. To see the example of this approach see the following project: 
 https://github.com/mzdyb/netdevops  
+This project presents a very simple workflow where configuration is automatically applied to network devices upon a push event. In more advanced scenarios we should use git branches and pull requests to implement configuration changes. You can find this concept also in the [NetDevOps](https://github.com/mzdyb/netdevops) repo.
+
 
 AAP Workflows used in this project are defined in CaC fashion in the following repo:
 https://github.com/mzdyb/aap-configuration-as-code
