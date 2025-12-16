@@ -1,7 +1,7 @@
 ---
 compliance_report_dir: /tmp/compliance_reports
 
-# What checks you want to show in the report
+# What checks we want to show in the report
 # key must match result variable naming: <prefix>_<key>_result
 compliance_checks:
   - label: VLANs
