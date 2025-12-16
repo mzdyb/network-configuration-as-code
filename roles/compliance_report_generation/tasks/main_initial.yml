@@ -1,0 +1,143 @@
+---
+# Role: compliance_report_generation
+# Generates and displays compliance reports for network devices
+
+- name: Ensure compliance results directory exists
+  ansible.builtin.file:
+    path: /tmp/compliance_results
+    state: directory
+    mode: '0755'
+  delegate_to: localhost
+  run_once: true
+
+# Arista compliance report
+- name: Write Arista device compliance report
+  ansible.builtin.copy:
+    content: |
+      Drift detection report for {{ inventory_hostname }}
+      Platform: {{ platform }}
+      Role: {{ role }}
+
+      {% if arista_vlan_result is defined and not arista_vlan_result.skipped | default(false) %}
+      VLANs CONFIGURATION
+      Status: {{ 'NON-COMPLIANT' if arista_vlan_result.changed else 'COMPLIANT' }}
+      {% if arista_vlan_result.commands is defined and arista_vlan_result.commands | length > 0 %}
+      Remediation Commands:
+      {% for command in arista_vlan_result.commands %}
+        {{ command }}
+      {% endfor %}
+      {% else %}
+      No remediation needed - VLANs are compliant
+      {% endif %}
+      {% endif %}
+
+      {% if arista_l2_interfaces_result is defined and not arista_l2_interfaces_result.skipped | default(false) %}
+      L2 INTERFACES CONFIGURATION
+      Status: {{ 'NON-COMPLIANT' if arista_l2_interfaces_result.changed else 'COMPLIANT' }}
+      {% if arista_l2_interfaces_result.commands is defined and arista_l2_interfaces_result.commands | length > 0 %}
+      Remediation Commands:
+      {% for command in arista_l2_interfaces_result.commands %}
+        {{ command }}
+      {% endfor %}
+      {% else %}
+      No remediation needed - L2 Interfaces are compliant
+      {% endif %}
+      {% endif %}
+
+      {% if arista_interfaces_result is defined and not arista_interfaces_result.skipped | default(false) %}
+      INTERFACES CONFIGURATION
+      Status: {{ 'NON-COMPLIANT' if arista_interfaces_result.changed else 'COMPLIANT' }}
+      {% if arista_interfaces_result.commands is defined and arista_interfaces_result.commands | length > 0 %}
+      Remediation Commands:
+      {% for command in arista_interfaces_result.commands %}
+        {{ command }}
+      {% endfor %}
+      {% else %}
+      No remediation needed - Interfaces are compliant
+      {% endif %}
+      {% endif %}
+
+      {% if arista_l3_interfaces_result is defined and not arista_l3_interfaces_result.skipped | default(false) %}
+      L3 INTERFACES CONFIGURATION
+      Status: {{ 'NON-COMPLIANT' if arista_l3_interfaces_result.changed else 'COMPLIANT' }}
+      {% if arista_l3_interfaces_result.commands is defined and arista_l3_interfaces_result.commands | length > 0 %}
+      Remediation Commands:
+      {% for command in arista_l3_interfaces_result.commands %}
+        {{ command }}
+      {% endfor %}
+      {% else %}
+      No remediation needed - L3 Interfaces are compliant
+      {% endif %}
+      {% endif %}
+    dest: "/tmp/compliance_results/{{ inventory_hostname }}_compliance_report.txt"
+    mode: '0644'
+  delegate_to: localhost
+  when: platform == "eos"
+
+# Cisco compliance report
+- name: Write Cisco device compliance report
+  ansible.builtin.copy:
+    content: |
+      Drift detection report for {{ inventory_hostname }}
+      Platform: {{ platform }}
+      Role: {{ role }}
+
+      {% if cisco_vlan_result is defined and not cisco_vlan_result.skipped | default(false) %}
+      VLANs CONFIGURATION
+      Status: {{ 'NON-COMPLIANT' if cisco_vlan_result.changed else 'COMPLIANT' }}
+      {% if cisco_vlan_result.commands is defined and cisco_vlan_result.commands | length > 0 %}
+      Remediation Commands:
+      {% for command in cisco_vlan_result.commands %}
+        {{ command }}
+      {% endfor %}
+      {% else %}
+      No remediation needed - VLANs are compliant
+      {% endif %}
+      {% endif %}
+
+      {% if cisco_l2_interfaces_result is defined and not cisco_l2_interfaces_result.skipped | default(false) %}
+      L2 INTERFACES CONFIGURATION
+      Status: {{ 'NON-COMPLIANT' if cisco_l2_interfaces_result.changed else 'COMPLIANT' }}
+      {% if cisco_l2_interfaces_result.commands is defined and cisco_l2_interfaces_result.commands | length > 0 %}
+      Remediation Commands:
+      {% for command in cisco_l2_interfaces_result.commands %}
+        {{ command }}
+      {% endfor %}
+      {% else %}
+      No remediation needed - L2 Interfaces are compliant
+      {% endif %}
+      {% endif %}
+
+      {% if cisco_interfaces_result is defined and not cisco_interfaces_result.skipped | default(false) %}
+      INTERFACES CONFIGURATION
+      Status: {{ 'NON-COMPLIANT' if cisco_interfaces_result.changed else 'COMPLIANT' }}
+      {% if cisco_interfaces_result.commands is defined and cisco_interfaces_result.commands | length > 0 %}
+      Remediation Commands:
+      {% for command in cisco_interfaces_result.commands %}
+        {{ command }}
+      {% endfor %}
+      {% else %}
+      No remediation needed - Interfaces are compliant
+      {% endif %}
+      {% endif %}
+
+      {% if cisco_l3_interfaces_result is defined and not cisco_l3_interfaces_result.skipped | default(false) %}
+      L3 INTERFACES CONFIGURATION
+      Status: {{ 'NON-COMPLIANT' if cisco_l3_interfaces_result.changed else 'COMPLIANT' }}
+      {% if cisco_l3_interfaces_result.commands is defined and cisco_l3_interfaces_result.commands | length > 0 %}
+      Remediation Commands:
+      {% for command in cisco_l3_interfaces_result.commands %}
+        {{ command }}
+      {% endfor %}
+      {% else %}
+      No remediation needed - L3 Interfaces are compliant
+      {% endif %}
+      {% endif %}
+    dest: "/tmp/compliance_results/{{ inventory_hostname }}_compliance_report.txt"
+    mode: '0644'
+  delegate_to: localhost
+  when: platform == "ios-xe"
+
+- name: Display compliance report on screen
+  ansible.builtin.debug:
+    msg: "{{ lookup('file', '/tmp/compliance_results/' + inventory_hostname + '_compliance_report.txt').split('\n') }}"

@@ -1,9 +1,15 @@
 ---
 interfaces:
+  - name: Loopback0
+    description: loopback
+    ipv4:
+      - address: 1.1.1.1/32
+    enabled: true
+    state: present
   - name: Ethernet0/1
     description: to-rtr2
     ipv4:
-      - address: 10.0.0.1/30
+      - address: 10.0.0.3/30
     enabled: true
     state: present
   - name: Ethernet0/2
@@ -12,9 +18,4 @@ interfaces:
       - address: 192.168.1.1/24
     enabled: true
     state: present
-  - name: Loopback0
-    description: loopback
-    ipv4:
-      - address: 1.1.1.1/32
-    enabled: true
-    state: present
+

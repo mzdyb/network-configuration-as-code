@@ -12,3 +12,15 @@ vlans:
   - vlan_id: 40
     name: mgmt
     state: present
+
+  # #default vlans
+  # - vlan_id: 1
+  #   state: present
+  # - vlan_id: 1002
+  #   state: present
+  # - vlan_id: 1003
+  #   state: present
+  # - vlan_id: 1004
+  #   state: present
+  # - vlan_id: 1005
+  #   state: present

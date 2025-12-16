@@ -1,0 +1,26 @@
+---
+- name: Ensure older for compliance reports exists
+  ansible.builtin.file:
+    path: "{{ compliance_report_dir }}"
+    state: directory
+    mode: "0755"
+  delegate_to: localhost
+  run_once: true
+
+- name: Generate drift/compliance report
+  ansible.builtin.template:
+    src: compliance_report.j2
+    dest: "{{ compliance_report_dir }}/{{ inventory_hostname }}_compliance_report.txt"
+    mode: "0644"
+  delegate_to: localhost
+  when: platform in platform_result_prefix
+
+- name: Show the report in the console
+  ansible.builtin.debug:
+    msg: >-
+      {{
+        lookup('file', compliance_report_dir ~ '/' ~ inventory_hostname ~ '_compliance_report.txt')
+        .splitlines()
+      }}
+  delegate_to: localhost
+  when: platform in platform_result_prefix

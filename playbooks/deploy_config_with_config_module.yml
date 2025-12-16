@@ -10,13 +10,6 @@
         - "{{ config_data_config_module }}"
       register: config_data_results
 
-    # - debug: var=config_data_results
-
-    # - name: Template a file
-    #   ansible.builtin.template:
-    #     src: "{{ config_template }}"
-    #     dest: /tmp/{{ inventory_hostname }}_config.txt
-
 # Block for Cisco devices (routers and switches)
     - name: Configure Cisco devices using config module
       when: platform == "ios-xe"

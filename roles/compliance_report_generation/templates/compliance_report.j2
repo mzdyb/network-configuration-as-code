@@ -1,0 +1,31 @@
+{%- set prefix = platform_result_prefix.get(platform, '') -%}
+{%- set hv = hostvars[inventory_hostname] -%}
+=== Drift/Compliance Report ===
+Device:   {{ inventory_hostname }}
+Platform: {{ platform }}
+Role:     {{ role | default('N/A') }}
+
+{% if not prefix %}
+No compliance checks defined for platform "{{ platform }}".
+{% else %}
+Details:
+{% for check in compliance_checks %}
+{% set varname = prefix ~ '_' ~ check.key ~ '_result' %}
+{% if varname in hv and not (hv[varname].skipped | default(false)) %}
+{% set result = hv[varname] %}
+
+- {{ check.label }}:
+  Status: {{ 'NON-COMPLIANT' if (result.changed | default(false)) else 'COMPLIANT' }}
+{% set cmds = result.commands | default([]) %}
+{% if cmds | length > 0 %}
+
+  Remediation:
+{% for cmd in cmds %}
+    - {{ cmd }}
+{% endfor %}
+{% else %}
+  Remediation: none
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endif %}

@@ -1,0 +1,32 @@
+---
+- name: Validate interface configuration compliance
+  hosts: cisco_routers
+  
+  vars:
+    compliance_mode: 'true'
+
+  tasks:
+    - name: Load configuration data from Source of Truth
+      ansible.builtin.include_vars:
+        file: "{{ item }}"
+      with_fileglob:
+        - "{{ config_data_resource_modules }}"
+      register: config_data_results
+
+    - name: Validate L3 Interface Compliance
+      cisco.ios.ios_l3_interfaces:
+        config: "{{ l3_interfaces }}"
+        state: replaced
+      when: l3_interfaces is defined
+      check_mode: "{{ compliance_mode }}"
+      register: l3_interfaces_compliance_result
+
+    - name: Define compliance status
+      set_fact:
+        compliance_status: "{{ 'NON-COMPLIANT' if l3_interfaces_compliance_result.changed else 'COMPLIANT' }}"
+
+    - debug: var=compliance_status
+
+    - debug: var=l3_interfaces_compliance_result
+
+    - debug: var=l3_interfaces_compliance_result.commands

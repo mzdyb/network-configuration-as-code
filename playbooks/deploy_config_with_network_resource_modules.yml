@@ -1,0 +1,24 @@
+---
+- name: Deploy configuration using Network Resource modules
+  hosts: network_devices
+
+  vars:
+    compliance_mode: 'false'
+
+  pre_tasks:
+    - name: Load configuration data from Source of Truth
+      ansible.builtin.include_vars:
+        file: "{{ item }}"
+      with_fileglob:
+        - "{{ config_data_resource_modules }}"
+      register: config_data_results
+
+  roles:
+    - role: configure_arista_with_network_resource_modules
+      when: platform == "eos"
+
+    - role: configure_cisco_with_network_resource_modules
+      when: platform == "ios-xe"
+
+    - role: compliance_report_generation
+      when: compliance_mode == 'true'

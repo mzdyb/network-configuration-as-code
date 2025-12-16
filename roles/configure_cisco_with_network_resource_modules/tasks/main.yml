@@ -1,0 +1,38 @@
+---
+- name: Configure Cisco switches
+  when: role == "switch"
+  block:
+    - name: "Configure VLANs"
+      cisco.ios.ios_vlans:
+        config: "{{ vlans }}"
+        state: overridden
+      when: vlans is defined
+      check_mode: "{{ compliance_mode }}"
+      register: cisco_vlan_result
+
+    - name: Configure L2 interfaces
+      cisco.ios.ios_l2_interfaces:
+        config: "{{ l2_interfaces }}"
+        state: replaced
+      when: l2_interfaces is defined
+      check_mode: "{{ compliance_mode }}"
+      register: cisco_l2_interfaces_result
+
+- name: Configure Cisco routers
+  when: role == "router"
+  block:
+    - name: Configure interface parameters
+      cisco.ios.ios_interfaces:
+        config: "{{ interfaces }}"
+        state: replaced
+      when: interfaces is defined
+      check_mode: "{{ compliance_mode }}"
+      register: cisco_interfaces_result
+
+    - name: Configure interface L3 parameters
+      cisco.ios.ios_l3_interfaces:
+        config: "{{ l3_interfaces }}"
+        state: replaced
+      when: l3_interfaces is defined
+      check_mode: "{{ compliance_mode }}"
+      register: cisco_l3_interfaces_result

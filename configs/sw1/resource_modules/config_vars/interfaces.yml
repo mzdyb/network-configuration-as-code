@@ -8,7 +8,7 @@ l2_interfaces:
     mode: access
     access:
       vlan: 20
-  - name: Ethernet0/3
-    mode: access
-    access:
-      vlan: 31
+  # - name: Ethernet0/3
+  #   mode: access
+  #   access:
+  #     vlan: 31

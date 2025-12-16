@@ -20,18 +20,18 @@ The following lab environment was created with Containerlab:
 - **sw2**: Arista EOS Switch (172.20.0.103)
 
 ## Detailed Description
-This project uses simple VLAN and interface configurations of devices sw1, sw2, rtr1 and rtr2 to showcase the configuration implementation concepts. The device configurations which serve as our SoT are stored in _configs_ folder. Each device has separate configuration subfolders depending on the Ansible module used:
-1. For Config module: _'config_module'_ folder
-2. For Network Resource modules: _'resource_modules'_ folder
+This project uses simple VLAN and interface configurations of devices sw1, sw2, rtr1 and rtr2 to showcase the configuration implementation concepts. The device configurations which serve as our SoT are stored in `configs` folder. Each device has separate configuration subfolders depending on the Ansible module used:
+1. For Config module: `'config_module'` folder
+2. For Network Resource modules: `'resource_modules'` folder
 
 In both approaches configuration data is decoupled from configuration syntax as the following:
 #### Config Module approach:
 - Data model: stored in _config_vars_ folders and based on custom Jinja2 templates
-- Syntax: defined in Jinja2 templates in _templates_ folder
+- Syntax: defined in Jinja2 templates in `templates` folder
 
 
 #### Resource Module approach:
-- Data: stored in _config_vars_ folders and based on data structures defined by Resource modules
+- Data: stored in `config_vars` folders and based on data structures defined by Resource modules
 - Syntax: handled automatically by Ansible modules
 
 ### Github Actions
@@ -42,7 +42,7 @@ GitHub Actions workflow provides automated deployment of network configurations 
 
 
 ## Network configuration workflow
-1. Modify network configuration in _configs_ directory
+1. Modify network configuration in `configs` directory
 2. Stage, commit and push changes to main branch
 ```
 git add .
@@ -61,7 +61,6 @@ Two Workflow Job Templates are defined on AAP to implement configurations: one u
 AAP Templates:
 ![AAP Workflow](files/aap_templates.png) 
 
-
 ## Advanced concepts
 In this project the following basic Configuration as Code related concepts have been presented:
 - **Source of Truth**: intended configurations stored and version-controlled in Git
@@ -73,6 +72,41 @@ This framework can be further extended with more advanced concepts for example:
 - **Configuration drift detection**: monitor and report unauthorized configuration changes
 - **Automated remediation**: automatically revert drift to maintain SoT compliance
 - **Rollback capabilities**: revert to previous configurations using Git history
+
+## Configuration Drift Detection
+
+This repository demonstrates two approaches for detecting configuration drift on network devices using Ansible.
+
+
+## 1. Detecting Drift with Network Resource Modules
+
+The simplest way to detect configuration drift is by using **Network Resource modules**.
+
+The playbook `deploy_config_with_network_resource_modules` supports a variable called `compliance_mode`.  
+When `compliance_mode` is enabled the playbook does not apply any configuration changes. Instead it:
+
+- Compares the running configuration with the intended state
+- Detects configuration drift
+- Generates a compliance report
+
+### Enabling Compliance Mode
+
+You can enable `compliance_mode` by setting it to `true` using one of the following methods:
+
+- **CLI parameter**:
+  ```
+  ansible-playbook -i inventory playbooks/deploy_config_with_network_resource_modules.yml -e compliance_mode=true
+  ```
+- setting `compliance_mode` variable to `true` in AAP Job template or Survey
+
+## 2. Detecting drift with the Config module
+
+The playbook `validate_interface_compliance_with_config_module` demonstrates how to verify interface configuration compliance. In this approach the interface configuration section from the device’s running configuration is compared with the intended configuration rendered from a Jinja2 template.
+
+To detect and display configuration drift run the playbook with the `--diff` option. Example:
+```
+ansible-playbook -i inventory playbooks/validate_interface_compliance_with_config_module.yml --diff
+```
 
 ## Remarks
 Config modules are not declarative so they do not define configuration states. It is good practice to define states when creating Jinja2 templates (states are implemented in this project), it makes configuration removal process much easier.

@@ -1,0 +1,33 @@
+---
+# This playbook is used to validate the interface configuration compliance with the config module.
+
+- name: Validate interface configuration compliance with config module
+  hosts: cisco_routers
+  
+  vars:
+    compliance_mode: 'true'
+
+  tasks:
+    - name: Load configuration data from Source of Truth
+      ansible.builtin.include_vars:
+        file: "{{ item }}"
+      with_fileglob:
+        - "{{ config_data_config_module }}"
+      register: config_data_results
+
+    - name: Get interfaces configuration from device running configuration
+      cisco.ios.ios_command:
+        commands:
+          - "show running-config | section interface"
+      register: interfaces_running_config
+
+    - name: Interfaces configuration drift check
+      cisco.ios.ios_config:
+        diff_against: intended
+        running_config: "{{ interfaces_running_config.stdout[0] }}"
+        intended_config: "{{ lookup('ansible.builtin.template', config_template_dir + '/interfaces.j2' ) }}"
+        diff_ignore_lines:
+          - "^!$"
+          - "^no shutdown$"
+      check_mode: true
+      register: interfaces_drift

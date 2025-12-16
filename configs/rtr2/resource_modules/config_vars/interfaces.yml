@@ -13,7 +13,7 @@ interfaces:
 l3_interfaces:
   - name: Ethernet1
     ipv4:
-      - address: 10.0.0.2/30
+      - address: 10.0.0.1/30
   - name: Ethernet2
     ipv4:
       - address: 192.168.1.2/24
