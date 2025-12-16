@@ -78,7 +78,7 @@ This framework can be further extended with more advanced concepts for example:
 This repository demonstrates two approaches for detecting configuration drift on network devices using Ansible.
 
 
-## 1. Detecting Drift with Network Resource Modules
+### 1. Detecting Drift with Network Resource Modules
 
 The simplest way to detect configuration drift is by using **Network Resource modules**.
 
@@ -89,7 +89,7 @@ When `compliance_mode` is enabled the playbook does not apply any configuration 
 - Detects configuration drift
 - Generates a compliance report
 
-### Enabling Compliance Mode
+#### Enabling Compliance Mode
 
 You can enable `compliance_mode` by setting it to `true` using one of the following methods:
 
@@ -99,7 +99,7 @@ You can enable `compliance_mode` by setting it to `true` using one of the follow
   ```
 - setting `compliance_mode` variable to `true` in AAP Job template or Survey
 
-## 2. Detecting drift with the Config module
+### 2. Detecting drift with the Config module
 
 The playbook `validate_interface_compliance_with_config_module` demonstrates how to verify interface configuration compliance (detect drift) with Config module. In this approach the interface configuration section from the device’s running configuration is compared with the intended configuration rendered from a Jinja2 template.
 
@@ -107,6 +107,9 @@ To detect and display configuration drift run the playbook with the `--diff` opt
 ```
 ansible-playbook -i inventory playbooks/validate_interface_compliance_with_config_module.yml --diff
 ```
+
+## Automated remediation
+TBD
 
 ## Remarks
 Config modules are not declarative so they do not define configuration states. It is good practice to define states when creating Jinja2 templates (states are implemented in this project), it makes configuration removal process much easier.
