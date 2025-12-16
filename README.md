@@ -101,7 +101,7 @@ You can enable `compliance_mode` by setting it to `true` using one of the follow
 
 ## 2. Detecting drift with the Config module
 
-The playbook `validate_interface_compliance_with_config_module` demonstrates how to verify interface configuration compliance. In this approach the interface configuration section from the device’s running configuration is compared with the intended configuration rendered from a Jinja2 template.
+The playbook `validate_interface_compliance_with_config_module` demonstrates how to verify interface configuration compliance (detect drift) with Config module. In this approach the interface configuration section from the device’s running configuration is compared with the intended configuration rendered from a Jinja2 template.
 
 To detect and display configuration drift run the playbook with the `--diff` option. Example:
 ```
