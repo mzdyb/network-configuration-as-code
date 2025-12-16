@@ -1,6 +1,4 @@
 ---
-# This playbook is used to validate the interface configuration compliance with the config module.
-
 - name: Validate interface configuration compliance with config module
   hosts: cisco_routers
   
