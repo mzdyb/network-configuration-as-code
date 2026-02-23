@@ -49,9 +49,10 @@ git add .
 git commit -m 'configuration x update'
 git push
 ```
-3. Github actions workflow automatically triggers webhook and runs the appropriate automation Workflow Job Template on Ansible Automation Platform
+3. Github actions workflow automatically triggers webhook 
+4. AAP runs the appropriate automation Workflow Job Template on Ansible Automation Platform
 
-Configuration as Code workflow:
+Workflow:
 ![CaC Workflow](files/cac_workflow.png)  
 
 ## AAP Workflow Job Templates
