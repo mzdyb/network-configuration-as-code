@@ -52,7 +52,7 @@ git push
 3. Github actions workflow automatically triggers webhook 
 4. AAP runs the appropriate automation Workflow Job Template on Ansible Automation Platform
 
-Workflow:
+Workflow:  
 ![CaC Workflow](files/cac_workflow.png)  
 
 ## AAP Workflow Job Templates
