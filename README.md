@@ -66,7 +66,7 @@ AAP Templates:
 ![AAP Workflow](files/aap_templates.png) 
 
 ## Advanced concepts
-So frar in this project the following basic Configuration as Code related concepts have been presented:
+So far in this project the following basic Configuration as Code related concepts have been presented:
 - **Source of Truth**: intended configurations stored and version-controlled in Git
 - **Configuration paradigm shift**: modify configurations in Git not directly on devices
 - **Automated deployment**: Ansible automatically applies changes from SoT to devices
